@@ -1,0 +1,15 @@
+# byte compiled and cache/ddl files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# yet empty files
+config.py
+testing.py
+utils.py
+
+# venvs
+venv/
+ENV/
+env/
+.env
