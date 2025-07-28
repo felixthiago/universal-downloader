@@ -11,12 +11,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MAX_FILE_SIZE = 1000 * 1024 * 1024 # 1GB
+
 
 @app.get("/")
 def index():
     return {"Hello": "World",
-            "api": "health working"}
+            "api": "health yes "}
 
 @app.post("/api/upload/")
 def upload_video(video_url: str = Query(..., description="URL do vídeo")):

@@ -1,96 +1,39 @@
-"use client"
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import ParticleSystem from "@/components/ui/particles"
+import VideoInput from "@/components/video-input"
+import Head from "next/head"
 
-export default function VideoInput() {
-  const [url, setUrl] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
-  const [downloadUrl, setDownloadUrl] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  // Gera preview da thumbnail sempre que a URL mudar
-  useEffect(() => {
-    if (!url) {
-      setThumbnail("");
-      return;
-    }
-    const ytId = url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&/]+)/)?.[1];
-    if (ytId) {
-      setThumbnail(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`);
-    } else {
-      setThumbnail(""); // para outros hosts, ou implementar canvas/CORS aqui
-    }
-  }, [url]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setDownloadUrl("");
-    setLoading(true);
-
-    try {
-      const res = await fetch(
-        `http://127.0.0.1:8000/api/upload/?video_url=${encodeURIComponent(url)}`,
-        { method: "POST" }
-      );
-
-      let data;
-      try {
-        data = await res.json();
-      } catch {
-        data = { detail: res.statusText || "Erro inesperado" };
-      }
-
-      if (!res.ok) {
-        throw new Error(data.detail);
-      }
-
-      setDownloadUrl(data.download_url);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function Home() {
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        placeholder="URL Do vídeo"
-        value={url}
-        onChange={(e) => setUrl(e.target.value.trim())}
-      />
-      {thumbnail && (
-        <Image
-          src={thumbnail}
-          onError={() => setThumbnail("")}
-          alt="Thumbnail preview"
-          width={80}
-          height={40}
-          className="w-48 h-auto object-cover rounded border"
-          unoptimized
-        />
-      )}
+    <>
+    <Head>
+      <title>universal downloader</title>
+        <link rel="icon" href="../public/thi.png" />
+    </Head>
 
-      {error && <p className="text-red-500">{error}</p>}
+        <div className="w-screen h-screen relative overflow-hidden">
+      <ParticleSystem />
 
-      <Button type="submit" disabled={!url || loading}>
-        {loading ? "Processando..." : "Gerar link"}
-      </Button>
+      <div className="absolute inset-0 z-10 flex items-center justify-center p-4">
+        <div className="text-center space-y-6 md:space-y-8 w-full max-w-2xl">
+          <div className="space-y-3 md:space-y-4">
+            <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-gray-50 tracking-tight leading-tight">
+              universal downloader
+            </h2>
+            <p className="text-base md:text-xl text-gray-300/90 max-w-xl mx-auto px-4">
+              supports yt, instagram, twitter, and ++ platforms
+            </p>
+          </div>
 
-      {downloadUrl && (
-        <a
-          href={downloadUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block text-blue-600 underline"
-        >
-          Baixar vídeo!
-        </a>
-      )}
-    </form>
-  );
+          <div className="flex justify-center">
+            <VideoInput />
+          </div>
+        </div>
+      </div>
+
+      <footer className="absolute bottom-0 left-0 right-0 z-10 p-4 md:p-6 text-center">
+        <p className="text-gray-400/70 text-xs md:text-sm">@buggedplanet on all social medias</p>
+      </footer>
+    </div>
+    </>
+  )
 }

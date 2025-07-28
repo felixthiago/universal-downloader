@@ -4,9 +4,12 @@ import mimetypes
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 
+MAX_FILE_SIZE = 1000
+
+
 def stream_media(url):
     try:
-        with YoutubeDL({"quiet": True}) as ydl:
+        with YoutubeDL({"quiet": True }) as ydl:
             info = ydl.extract_info(url, download = False)
 
             video_id = info.get("id")
@@ -17,12 +20,17 @@ def stream_media(url):
             params = {
                 "format": "best",
                 "outtmpl": filename,
-                "merge_output_format": info.get("ext") if ext in ["mp4", "webm"] else "mp4"
+                "merge_output_format": "mp4"
             }
 
             with YoutubeDL(params) as ydl:
                 info = ydl.extract_info(url, download = False)
 
+                size = info.get("filesize_approx")
+                mbs = size / (1024 * 1024)
+                print(mbs)
+                if mbs > MAX_FILE_SIZE:
+                    raise DownloadError(f"Fie size exceeds the limit of {MAX_FILE_SIZE}MB")
                 if "entries" in info:
                     raise DownloadError("This URL contains multiple entries, please specify a single entry.")
                 else:
@@ -35,7 +43,7 @@ def stream_media(url):
                         filename = filename,
                         mime_type = mime_type,
                         video_id = video_id,
-                        title = info.get("title").encode("ascii", "ignore").decode("ascii") or "Unknown Title"
+                        title = info.get("title").encode("ascii","" "ignore").decode("ascii") or "Unknown Title"
                     )
                     return response
                 else:
