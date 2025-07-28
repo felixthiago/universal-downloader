@@ -29,7 +29,6 @@ def stream_media(url):
                     hls = info['url']
 
                 res = requests.get(hls, stream=True)
-
                 if res.status_code == 200:
                     response = dict(
                         res = res.raw,
