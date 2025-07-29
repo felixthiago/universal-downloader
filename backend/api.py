@@ -24,7 +24,8 @@ def upload_video(video_url: str = Query(..., description="URL do vídeo")):
     info = upload_media(res)
     if not info:
         return HTTPException(status_code = 500, detail = "Erro ao fazer upload do vídeo!!")
-    
+    if res is None:
+        return HTTPException(status_code = 404, detail = "Erro ao baixar o vídeo, verifique a URL")
     return {
         "download_url": info["url"],
         "filename": info["key"],

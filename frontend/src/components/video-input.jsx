@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Download, ExternalLink, CheckCircle, ArrowDown, FileDown } from "lucide-react"
 
+var NEXT_PUBLIC_API_URL = "http://34.206.207.164:8000"
+
 function ProgressBar({
   progress = 0,
   stage = "Iniciando...",
@@ -241,7 +243,7 @@ export default function VideoInput() {
     simulateRealisticDownloadProgress()
 
     try {
-      const res = await fetch(`http://localhost:8000/api/upload/?video_url=${encodeURIComponent(url)}`, {
+      const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/upload/?video_url=${encodeURIComponent(url)}`, {
         method: "POST",
         signal: abortControllerRef.current.signal,
       })

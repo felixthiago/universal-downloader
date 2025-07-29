@@ -9,7 +9,7 @@ MAX_FILE_SIZE = 1000
 
 def stream_media(url):
     try:
-        with YoutubeDL({"quiet": True }) as ydl:
+        with YoutubeDL({"quiet": True, "cookiefile": "../cookies.txt"}) as ydl:
             info = ydl.extract_info(url, download = False)
 
             video_id = info.get("id")
