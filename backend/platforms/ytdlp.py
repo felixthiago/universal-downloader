@@ -6,10 +6,14 @@ from yt_dlp.utils import DownloadError
 
 MAX_FILE_SIZE = 1000
 
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+COOKIE_FILE = os.path.join(BASE_DIR, 'cookies.txt')
 
 def stream_media(url):
     try:
-        with YoutubeDL({"quiet": True, "cookiefile": "../cookies.txt"}) as ydl:
+        with YoutubeDL({"quiet": True, "cookiefile": COOKIE_FILE}) as ydl:
             info = ydl.extract_info(url, download = False)
 
             video_id = info.get("id")
@@ -20,7 +24,7 @@ def stream_media(url):
             params = {
                 "format": "best",
                 "outtmpl": filename,
-                "merge_output_format": "mp4"
+                "merge_output_format": "mp4",
             }
 
             with YoutubeDL(params) as ydl:
