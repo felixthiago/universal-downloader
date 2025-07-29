@@ -1,5 +1,3 @@
-cookies.txt
-
 # byte compiled and cache/ddl files
 __pycache__/
 *.py[cod]
