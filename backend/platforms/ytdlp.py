@@ -8,12 +8,9 @@ MAX_FILE_SIZE = 1000
 
 import os
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-COOKIE_FILE = os.path.join(BASE_DIR, 'cookies.txt')
-
 def stream_media(url):
     try:
-        with YoutubeDL({"quiet": True, "cookiefile": COOKIE_FILE}) as ydl:
+        with YoutubeDL({"quiet": True}) as ydl:
             info = ydl.extract_info(url, download = False)
 
             video_id = info.get("id")
@@ -29,10 +26,8 @@ def stream_media(url):
 
             with YoutubeDL(params) as ydl:
                 info = ydl.extract_info(url, download = False)
-
                 size = info.get("filesize_approx")
                 mbs = size / (1024 * 1024)
-                print(mbs)
                 if mbs > MAX_FILE_SIZE:
                     raise DownloadError(f"Fie size exceeds the limit of {MAX_FILE_SIZE}MB")
                 if "entries" in info:

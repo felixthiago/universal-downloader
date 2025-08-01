@@ -1,3 +1,4 @@
+cookies.txt
 # byte compiled and cache/ddl files
 __pycache__/
 *.py[cod]
@@ -42,3 +43,4 @@ yarn-debug.log*
 
 # OS generated files
 Thumbs.db
+.vercel
