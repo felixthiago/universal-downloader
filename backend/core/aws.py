@@ -38,7 +38,7 @@ def upload_media(res):
         "content_type": mime_type
             }
 
-def generate_presigned_url(key, expires_in = 60):
+def generate_presigned_url(key, expires_in = 60 * 30):
     try:
         threading.Timer(60, delete_media, args = (key, )).start()
 
