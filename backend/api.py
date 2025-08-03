@@ -19,12 +19,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
+@app.get("/health")
 def index():
     return {"Hello": "World",
             "api": "health yes "}
 
-@app.post("/api/upload/")
+@app.post("/upload/")
 def upload_video(video_url: str = Query(..., description="URL do vídeo")):
     res = stream_media(video_url)
     info = upload_media(res)
