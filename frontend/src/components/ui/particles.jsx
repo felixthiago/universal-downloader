@@ -5,14 +5,23 @@ import { Canvas, useFrame } from "@react-three/fiber"
 import { Points, PointMaterial } from "@react-three/drei"
 import * as THREE from "three"
 
+const palette = [
+  // new THREE.Color("#0cb7f2"), // azul claro
+  // new THREE.Color("#1a2aff"), // azul claro 2
+  // new THREE.Color("#042163"), // azul escuro
+  new THREE.Color("#001442"), // azul mais escuro
+  new THREE.Color("#130794"), // azul mais escuro claro
+  // new THREE.Color("#330f66"), // azul mais escuro quase roxo
+]
+
 function Particles() {
   const ref = useRef(null)
 
   const particlesPosition = useMemo(() => {
     const positions = new Float32Array(6000 * 3)
+    const colors = new Float32Array(6000 * 3)
 
     for (let i = 0; i < 6000; i++) {
-      // Create more realistic galaxy spiral pattern
       const radius = Math.pow(Math.random(), 0.5) * 25
       const angle = Math.random() * Math.PI * 4 + radius * 0.3
       const height = (Math.random() - 0.5) * (3 - radius * 0.1)
@@ -20,9 +29,14 @@ function Particles() {
       positions[i * 3] = Math.cos(angle) * radius
       positions[i * 3 + 1] = height
       positions[i * 3 + 2] = Math.sin(angle) * radius
+
+      const color =  palette[Math.floor(Math.random() * palette.length)]
+      colors[i * 3] = color.r
+      colors[i * 3 + 1] = color.g
+      colors[i * 3 + 2] = color.b
     }
 
-    return positions
+    return { positions, colors }
   }, [])
 
   useFrame((state) => {
@@ -33,10 +47,10 @@ function Particles() {
   })
 
   return (
-    <Points ref={ref} positions={particlesPosition} stride={3} frustumCulled={false}>
+    <Points ref={ref} positions={particlesPosition.positions} colors = {particlesPosition.colors} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
-        color="#0cb7f2"
+        vertexColors
         size={0.04}
         sizeAttenuation={true}
         depthWrite={false}
@@ -51,7 +65,7 @@ function GalaxyCore() {
 
   const corePosition = useMemo(() => {
     const positions = new Float32Array(1000 * 3)
-
+    const colors = new Float32Array(1000 * 3)
     for (let i = 0; i < 1000; i++) {
       const radius = Math.random() * 3
       const angle = Math.random() * Math.PI * 2
@@ -60,9 +74,15 @@ function GalaxyCore() {
       positions[i * 3] = Math.cos(angle) * radius
       positions[i * 3 + 1] = height
       positions[i * 3 + 2] = Math.sin(angle) * radius
+
+      const color = new THREE.Color(`hsl(${270 + Math.random() * 30}, 100%, ${40 + Math.random() * 30}%)`)
+      colors[i * 3] = color.r
+      colors[i * 3 + 1] = color.g
+      colors[i * 3 + 2] = color.b
     }
 
-    return positions
+
+      return positions, colors
   }, [])
 
   useFrame((state) => {

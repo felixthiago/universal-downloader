@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Download, ExternalLink, CheckCircle, ArrowDown, FileDown } from "lucide-react"
-
-var NEXT_PUBLIC_API_URL = "https://buggedplanet.fly.dev"
+//  https://buggedplanet.fly.dev
+var NEXT_PUBLIC_API_URL = "http://127.0.0.1:8000"
 
 function ProgressBar({
   progress = 0,
@@ -16,6 +16,7 @@ function ProgressBar({
   downloadSpeed = null,
   estimatedTime = null,
 }) {
+  
   return (
     <div className="w-full space-y-3">
       <div className="flex justify-between items-center">
@@ -82,18 +83,18 @@ export default function VideoInput() {
   const downloadStartTimeRef = useRef(null)
   const abortControllerRef = useRef(null)
 
-  useEffect(() => {
-    if (!url) {
-      setThumbnail("")
-      return
-    }
-    const ytId = url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&/]+)/)?.[1]
-    if (ytId) {
-      setThumbnail(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`)
-    } else {
-      setThumbnail("")
-    }
-  }, [url])
+  // useEffect(() => {
+  //   if (!url) {
+  //     setThumbnail("")
+  //     return
+  //   }
+  //   const ytId = url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&/]+)/)?.[1]
+  //   if (ytId) {
+  //     setThumbnail(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`)
+  //   } else {
+  //     setThumbnail("")
+  //   }
+  // }, [url])
 
   const clearAllTimers = () => {
     if (progressIntervalRef.current) {
@@ -125,7 +126,7 @@ export default function VideoInput() {
     let lastProgressTime = Date.now()
     let lastProgress = 0
 
-    const initialStages = [
+    const stages = [
       { name: "Analisando URL...", duration: 800, progressEnd: 5 },
       { name: "Conectando ao servidor...", duration: 1200, progressEnd: 15 },
       { name: "Obtendo informações do vídeo...", duration: 1500, progressEnd: 25 },
@@ -135,8 +136,8 @@ export default function VideoInput() {
     let currentStageIndex = 0
 
     const processInitialStages = () => {
-      if (currentStageIndex < initialStages.length) {
-        const stage = initialStages[currentStageIndex]
+      if (currentStageIndex < stages.length) {
+        const stage = stages[currentStageIndex]
         setStage(stage.name)
 
         const stageStartTime = Date.now()
@@ -163,6 +164,7 @@ export default function VideoInput() {
       }
     }
 
+    
     const startDownloadProgress = () => {
       progressIntervalRef.current = setInterval(() => {
         const now = Date.now()
@@ -204,6 +206,7 @@ export default function VideoInput() {
     processInitialStages()
   }
 
+
   const completeDownload = (downloadData) => {
     clearAllTimers()
 
@@ -227,6 +230,7 @@ export default function VideoInput() {
     }, 50)
   }
 
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError("")
@@ -240,7 +244,7 @@ export default function VideoInput() {
 
     abortControllerRef.current = new AbortController()
 
-    simulateRealisticDownloadProgress()
+    // simulateRealisticDownloadProgress()
 
     try {
       const res = await fetch(`${NEXT_PUBLIC_API_URL}/upload/?video_url=${encodeURIComponent(url)}`, {
@@ -251,6 +255,7 @@ export default function VideoInput() {
       let data
       try {
         data = await res.json()
+        setThumbnail(data.thumbnail || "")
       } catch {
         data = { detail: res.statusText || "Erro inesperado" }
       }
@@ -296,13 +301,19 @@ export default function VideoInput() {
     }
   }, [])
 
+
+
+
+
+
+
   return (
     <Card className="w-full max-w-md bg-gradient-to-br from-gray-900/60 to-gray-800/40 backdrop-blur-xl border-gray-700/40 shadow-2xl shadow-gray-900/30">
       <CardContent className="p-4 md:p-6">
         <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
           <div className="space-y-3 md:space-y-4">
             <Input
-              placeholder="URL Do vídeo"
+              placeholder="URL"
               value={url}
               onChange={(e) => setUrl(e.target.value.trim())}
               className="bg-gray-800/60 border-gray-600/50 text-gray-50 placeholder:text-gray-400/70 focus:border-blue-400/70 focus:ring-blue-400/30 h-12 text-base"
@@ -365,7 +376,7 @@ export default function VideoInput() {
               ) : (
                 <>
                   <Download className="mr-2 h-4 w-4" />
-                  Gerar link
+                  generate download link
                 </>
               )}
             </Button>

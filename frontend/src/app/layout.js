@@ -1,13 +1,33 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"]
-})
+import localFont from "next/font/local";
+
+const inter = localFont({
+  src: [
+    {
+      path: './fonts/inter/Inter-Medium.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: './fonts/inter/Inter-MediumItalic.woff2',
+      weight: '400',
+      style: 'italic'
+    },
+    {
+      path: './fonts/inter/Inter-Bold.woff2',
+      weight: '700',
+      style: 'normal'
+    }
+  ],
+  
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 export const metadata = {
-  title: "thiaguitos universal downloader",
+  title: "thigas universal downloader",
   description: "@buggedplanet",
     icons: {
     icon: [
@@ -26,9 +46,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${inter.variable} antialiased`}
-      >
+      <body className="antialiased">
         {children}
       </body>
     </html>

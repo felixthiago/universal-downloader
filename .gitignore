@@ -16,15 +16,6 @@ env/
 .env.test.local
 .env.production.local
 
-# js
-/node_modules/
-/.next/
-/out/
-.vercel/
-npm-debug.log*
-yarn-debug.log*
-.vercel
-
 .vscode/
 .idea/
 *.suo
@@ -33,3 +24,13 @@ yarn-debug.log*
 *.sln
 
 Thumbs.db
+
+# frontend
+
+frontend/.next/
+frontend/node_modules
+frontend/out/
+frontend/.vercel/
+frontend/npm-debug.log*
+frontend/.vercel
+frontend/build
