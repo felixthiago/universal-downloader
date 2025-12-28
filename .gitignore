@@ -5,7 +5,7 @@ fly.toml
 __pycache__/
 *.py[cod]
 *$py.class
-
+test.py
 # venvs
 venv/
 ENV/
