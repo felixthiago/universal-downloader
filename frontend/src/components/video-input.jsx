@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Download, ExternalLink, CheckCircle, ArrowDown, FileDown } from "lucide-react"
 //  https://buggedplanet.fly.dev
-var NEXT_PUBLIC_API_URL = "http://127.0.0.1:8000"
+
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL
 
 function ProgressBar({
   progress = 0,

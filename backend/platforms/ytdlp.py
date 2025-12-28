@@ -29,6 +29,7 @@ def stream_media(url):
             mime_type = mimetypes.types_map.get(f".{ext}", "application/octet-stream")
 
             params = {
+                "cookiefile": "cookies.txt"
                 "format": "bv*+ba/b",
                 "outtmpl": filename,
                 "merge_output_format": "mp4",

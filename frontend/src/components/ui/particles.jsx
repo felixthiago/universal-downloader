@@ -100,7 +100,7 @@ function GalaxyCore() {
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.NormalBlending}
-        opacity={0.6}
+        opacity={0.4}
       />
     </Points>
   )
