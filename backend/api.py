@@ -11,6 +11,8 @@ from fastapi.responses import JSONResponse
 from platforms.ytdlp import stream_media, YoutubeAuthRequired
 from core.aws import upload_media
 from macawdemy.essays import get_essay
+# from fastapi.responses import StreamingResponse
+# from yt_dlp import YoutubeDL
 
 app = FastAPI()
 

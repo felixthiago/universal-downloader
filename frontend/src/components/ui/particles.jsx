@@ -67,10 +67,10 @@ function GalaxyCore() {
     const positions = new Float32Array(1000 * 3)
     const colors = new Float32Array(1000 * 3)
     for (let i = 0; i < 1000; i++) {
-      const radius = Math.random() * 3
+      const radius = 1 + Math.random() * 2
       const angle = Math.random() * Math.PI * 2
-      const height = (Math.random() - 0.5) * 0.5
-
+      // const height = (Math.random() - 0.5) * 0.5
+      const height = (Math.random() - 0.5) * 1.5
       positions[i * 3] = Math.cos(angle) * radius
       positions[i * 3 + 1] = height
       positions[i * 3 + 2] = Math.sin(angle) * radius
@@ -99,7 +99,8 @@ function GalaxyCore() {
         size={0.08}
         sizeAttenuation={true}
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
+        blending={THREE.NormalBlending}
+        opacity={0.6}
       />
     </Points>
   )

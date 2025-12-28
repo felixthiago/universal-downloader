@@ -31,7 +31,7 @@ export default function Home() {
       </div>
 
       <footer className="absolute bottom-0 left-0 right-0 z-10 p-4 md:p-6 text-center">
-        <p>teste</p>
+        <p>@buggedplanet</p>
       </footer>
     </div>
     </>

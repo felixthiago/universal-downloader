@@ -58,12 +58,12 @@ function ProgressBar({
         </div>
       </div>
 
-      {isCompleted && (
+      {/* {isCompleted && (
         <div className="flex items-center justify-center space-x-2 text-green-400 animate-fade-in">
           <CheckCircle className="w-5 h-5 animate-pulse" />
           <span className="text-sm font-medium">Download concluído com sucesso!</span>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
@@ -135,34 +135,34 @@ export default function VideoInput() {
 
     let currentStageIndex = 0
 
-    const processInitialStages = () => {
-      if (currentStageIndex < stages.length) {
-        const stage = stages[currentStageIndex]
-        setStage(stage.name)
+    // const processInitialStages = () => {
+    //   if (currentStageIndex < stages.length) {
+    //     const stage = stages[currentStageIndex]
+    //     setStage(stage.name)
 
-        const stageStartTime = Date.now()
-        const stageInterval = setInterval(() => {
-          const elapsed = Date.now() - stageStartTime
-          const stageProgress = Math.min(
-            (elapsed / stage.duration) * (stage.progressEnd - currentProgress),
-            stage.progressEnd - currentProgress,
-          )
+    //     const stageStartTime = Date.now()
+    //     const stageInterval = setInterval(() => {
+    //       const elapsed = Date.now() - stageStartTime
+    //       const stageProgress = Math.min(
+    //         (elapsed / stage.duration) * (stage.progressEnd - currentProgress),
+    //         stage.progressEnd - currentProgress,
+    //       )
 
-          setProgress(currentProgress + stageProgress)
+    //       setProgress(currentProgress + stageProgress)
 
-          if (elapsed >= stage.duration) {
-            clearInterval(stageInterval)
-            currentProgress = stage.progressEnd
-            currentStageIndex++
-            processInitialStages()
-          }
-        }, 100)
-      } else {
+    //       if (elapsed >= stage.duration) {
+    //         clearInterval(stageInterval)
+    //         currentProgress = stage.progressEnd
+    //         currentStageIndex++
+    //         processInitialStages()
+    //       }
+    //     }, 100)
+    //   } else {
         
-        setStage("Baixando vídeo...")
-        startDownloadProgress()
-      }
-    }
+    //     setStage("Baixando vídeo...")
+    //     startDownloadProgress()
+    //   }
+    // }
 
     
     const startDownloadProgress = () => {
@@ -244,8 +244,6 @@ export default function VideoInput() {
 
     abortControllerRef.current = new AbortController()
 
-    // simulateRealisticDownloadProgress()
-
     try {
       const res = await fetch(`${NEXT_PUBLIC_API_URL}/upload/?video_url=${encodeURIComponent(url)}`, {
         method: "POST",
@@ -255,6 +253,9 @@ export default function VideoInput() {
       let data
       try {
         data = await res.json()
+        if(data.status_code == 404){
+          setError("Erro inesperado ao baixar o vídeo, contate o administrador.")
+        }
         setThumbnail(data.thumbnail || "")
       } catch {
         data = { detail: res.statusText || "Erro inesperado" }
@@ -357,7 +358,7 @@ export default function VideoInput() {
             <Button
               type="submit"
               disabled={!url || loading}
-              className="w-full bg-gradient-to-r from-gray-600 to-blue-600 hover:from-gray-500 hover:to-blue-500 text-gray-50 font-medium py-3 h-12 transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-blue-900/40 border border-blue-500/30 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-gray-600 to-blue-600 hover:from-gray-500 hover:to-blue-500 text-gray-50 font-medium py-3 h-12 transition-all duration-200 transform hover:scale-[1.02] shadow-lg shadow-blue-900/40 border border-blue-500/30 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <span className="flex items-center">

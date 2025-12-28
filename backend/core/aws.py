@@ -61,4 +61,3 @@ def delete_media(key):
         s3_client.delete_object(Bucket = BUCKET,  Key = key)
     except Exception as e:
         logging.error(f"Error while deleting media: {e}")
-        
