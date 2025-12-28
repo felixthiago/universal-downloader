@@ -1,4 +1,4 @@
-backend/platforms/cookies.txt
+**/cookies.txt
 dockerignore
 dockerfile
 fly.toml
